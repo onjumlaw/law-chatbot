@@ -1,0 +1,13 @@
+# 2025 양형기준 신호등 챗봇 - 필수 패키지
+
+# Streamlit: 웹 UI 프레임워크
+streamlit>=1.32.0
+
+# Google Gemini API: AI 응답 생성
+google-generativeai>=0.7.0
+
+# pdfplumber: PDF 텍스트 추출
+pdfplumber>=0.10.3
+
+# python-dotenv: .env 파일에서 API 키 자동 로드
+python-dotenv>=1.0.0
