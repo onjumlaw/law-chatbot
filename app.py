@@ -230,24 +230,27 @@ def build_system_prompt(knowledge_base: str) -> str:
 def init_session():
     """앱 최초 실행 시 필요한 변수들을 초기화합니다."""
     defaults = {
-        # 화면에 표시할 대화 내역
         "messages": [],
-        # Gemini API에 보낼 대화 내역 (문맥 유지용)
         "chat_history": [],
-        # API 키 (.env 파일에 있으면 자동 로드)
         "api_key": os.getenv("GEMINI_API_KEY", ""),
-        # 시스템 프롬프트 (기본값: PDF 없음)
         "system_prompt": build_system_prompt(""),
-        # PDF 지식베이스 텍스트
         "knowledge_base": "",
-        # PDF 로드 여부
         "kb_loaded": False,
-        # PDF 텍스트 크기 (참고용)
         "kb_char_count": 0,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
+
+    # ── 앱 시작 시 pdfs/ 폴더 자동 로드 ──
+    if not st.session_state.kb_loaded:
+        kb, count = load_pdfs_from_folder("pdfs")
+        if count > 0:
+            st.session_state.knowledge_base = kb
+            st.session_state.system_prompt = build_system_prompt(kb)
+            st.session_state.kb_loaded = True
+            st.session_state.kb_char_count = len(kb)
+
 
 
 # ─────────────────────────────────────────
